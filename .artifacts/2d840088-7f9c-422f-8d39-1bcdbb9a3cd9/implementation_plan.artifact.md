@@ -1,46 +1,27 @@
-# Implementation Plan - Lab Activity 2: Contact Profile Screen
+# Implementation Plan - Lab Activity 5: State & Recomposition
 
-Reproduce a Contact Profile screen using Jetpack Compose and Material 3, following the specific layout and brand guidelines provided in the laboratory activity sheet.
+Implement a reactive screen in Jetpack Compose that demonstrates state management using `remember`, `mutableStateOf`, and `rememberSaveable`, including state hoisting as a bonus.
 
 ## Proposed Changes
 
-### Theme & Styling
-
-#### [MODIFY] [Color.kt](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/app/src/main/java/com/example/myapplication/ui/theme/Color.kt)
-- Add the specific hex colors for Light and Dark modes:
-  - `PrimaryLight`, `OnPrimaryLight`, `PrimaryContainerLight`, `SecondaryLight`, `SurfaceLight`, `OnSurfaceVariantLight`
-  - `PrimaryDark`, `OnPrimaryDark`, `PrimaryContainerDark`, `SecondaryDark`, `SurfaceDark`, `OnSurfaceVariantDark`
-
-#### [MODIFY] [Theme.kt](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/app/src/main/java/com/example/myapplication/ui/theme/Theme.kt)
-- Define `LightColorScheme` and `DarkColorScheme` using the new colors.
-- Rename `MyApplicationTheme` to `ProfileTheme`.
-- Ensure `dynamicColor` is disabled by default or handles the fallback correctly as per "Stretch Goals" if time permits, but primary focus is on the brand scheme.
-
 ### UI Components
 
-#### [NEW] [ProfileScreen.kt](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/app/src/main/java/com/example/myapplication/ProfileScreen.kt)
-- Implement `ProfileScreen` composable using `Scaffold`.
-- **Region A (TopAppBar):** "My Profile" title, navigation icon, overflow icon.
-- **Region B (Avatar + Badge):** Box with circular Image and a status Badge at `BottomEnd`.
-- **Region C (Name & Role):** Column with two Text composables (headlineSmall and bodyMedium), centered.
-- **Region D (Action Buttons):** Row with `Button` and `OutlinedButton`, using `weight(1f)` and `spacedBy(8.dp)`.
-- **Region E (Stats):** Card containing a Row with `SpaceEvenly` arrangement and three Column items.
-- **Region F (Contact Info):** Card with a Column of Icon + Text rows.
-- **Region G (FAB):** FloatingActionButton in the Scaffold slot.
-- Include Light and Dark mode `@Preview` functions.
+#### [NEW] [ReactiveScreen.kt](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/app/src/main/java/com/example/myapplication/ReactiveScreen.kt)
+- Create the `ReactiveScreen` composable.
+- Implement state for `name` using `rememberSaveable` (to survive rotation).
+- Implement state for `count` using `remember`.
+- Add a Greeting section that updates live as the user types in an `OutlinedTextField`.
+- Implement a stateless `CounterControls` composable (Part D - Bonus) to demonstrate state hoisting.
+- Include a Preview for the screen.
 
 #### [MODIFY] [MainActivity.kt](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/app/src/main/java/com/example/myapplication/MainActivity.kt)
-- Update `setContent` to use `ProfileTheme` and call the new `ProfileScreen`.
-- Remove the old `ProfileScreen` implementation to clean up.
+- Update `setContent` to call `ReactiveScreen()` instead of `ProfileScreen()`.
+- Use a simple `MaterialTheme` wrapper as suggested in the activity sheet, or keep the existing `ProfileTheme` if compatible.
 
 ## Verification Plan
 
-### Automated Tests
-- N/A (Manual verification via Previews is requested).
-
 ### Manual Verification
-- Render `@Preview` for Light Mode.
-- Render `@Preview` for Dark Mode (using `uiMode = UI_MODE_NIGHT_YES`).
-- Verify that colors change correctly between themes.
-- Ensure no hard-coded colors (check for `Color.Black`, `Color.White`, or hex literals in UI code).
-- Verify accessibility (content descriptions for images and icons).
+- **Recomposition:** Verify the greeting updates instantly while typing.
+- **State:** Verify the counter increments, decrements, and resets correctly.
+- **Rotation:** Use the emulator to rotate the screen and verify the `name` persists while the `count` resets (unless also saved).
+- **Hoisting:** Ensure the `CounterControls` works correctly via the parent state.

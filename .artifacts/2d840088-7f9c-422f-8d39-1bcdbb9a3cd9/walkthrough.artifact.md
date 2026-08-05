@@ -1,40 +1,32 @@
-# Walkthrough - Lab Activity 2: Contact Profile Screen
+# Walkthrough - Lab Activity 5: State & Recomposition
 
-I have successfully completed the laboratory activity by reproducing the Contact Profile screen using Jetpack Compose and Material 3. The implementation follows the specified brand guidelines, layout regions, and best practices.
+I have successfully implemented the reactive screen for Lab Activity 5. This screen demonstrates key Compose concepts including `remember`, `mutableStateOf`, `rememberSaveable`, and state hoisting.
 
 ## Changes Made
 
-### 1. Brand & Styling
-- **[Color.kt](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/app/src/main/java/com/example/myapplication/ui/theme/Color.kt):** Defined the exact hex codes for primary, secondary, surface, and container colors for both light and dark themes.
-- **[Theme.kt](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/app/src/main/java/com/example/myapplication/ui/theme/Theme.kt):** Implemented `ProfileTheme` using `lightColorScheme` and `darkColorScheme` to map the brand colors correctly. Disabled dynamic color by default to ensure the brand palette is used.
+### 1. Reactive UI Implementation
+- **[ReactiveScreen.kt](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/app/src/main/java/com/example/myapplication/ReactiveScreen.kt):** Created a new composable file that handles the screen's state and UI.
+    - **Reactive Greeting:** Implemented using `rememberSaveable` so that your typed name persists even after rotating the device.
+    - **Counter:** Implemented using `remember` and `mutableStateOf`.
+    - **State Hoisting (Bonus):** Created a stateless `CounterControls` composable that receives its values and callbacks from `ReactiveScreen`.
 
-### 2. UI Implementation
-- **[ProfileScreen.kt](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/app/src/main/java/com/example/myapplication/ProfileScreen.kt):** Created a modular screen using standard M3 components:
-    - **Scaffold:** Provides the structure for the `TopAppBar` and `FloatingActionButton`.
-    - **Region A (Top bar):** `TopAppBar` with title "My Profile" and standard navigation/action icons.
-    - **Region B (Avatar + Badge):** Circular avatar with a status badge aligned to `BottomEnd`.
-    - **Region C (Name & Role):** Typography applied using `headlineSmall` and `bodyMedium`.
-    - **Region D (Action Buttons):** Two buttons sharing width equally via `Modifier.weight(1f)`.
-    - **Region E (Stats):** A `Card` with `Arrangement.SpaceEvenly` for social stats.
-    - **Region F (Contact info):** A `Card` listing contact details with descriptive icons.
-    - **Region G (FAB):** Floating action button for secondary interactions.
-
-### 3. Entry Point
-- **[MainActivity.kt](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/app/src/main/java/com/example/myapplication/MainActivity.kt):** Refactored to use the new `ProfileTheme` and `ProfileScreen`.
+### 2. Entry Point Update
+- **[MainActivity.kt](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/app/src/main/java/com/example/myapplication/MainActivity.kt):** Updated the `setContent` block to display the new `ReactiveScreen`.
 
 ## Verification Results
 
-### Previews
-I verified the implementation using Compose Previews for both Light and Dark modes.
+### Build Success
+The project compiles successfully with the new reactive components.
 
-````carousel
-![Light Mode Preview](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/.artifacts/2d840088-7f9c-422f-8d39-1bcdbb9a3cd9/previews/ProfileScreenPreviewLight.png)
-<!-- slide -->
-![Dark Mode Preview](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/.artifacts/2d840088-7f9c-422f-8d39-1bcdbb9a3cd9/previews/ProfileScreenPreviewDark.png)
-````
+### UI Preview
+The `ReactiveScreenPreview` shows the initial state: "Hello, stranger!" and "Count: 0".
 
-> [!IMPORTANT]
-> No hard-coded colors were used in the UI components; all colors are dynamically sourced from `MaterialTheme.colorScheme` to support theme switching seamlessly.
+![Reactive Screen Initial State](file:///C:/Users/Administrator/AndroidStudioProjects/edp-android-colab/.artifacts/2d840088-7f9c-422f-8d39-1bcdbb9a3cd9/previews/ReactiveScreenPreview.png)
 
-### Reflection
-Each region was handled by a combination of `Column`, `Row`, and `Box` containers. Specifically, **Region B** used a `Box` to stack the status badge over the avatar, while **Region D** used a `Row` with `weight(1f)` to ensure equal button widths. A key theming decision was to prioritize the custom brand palette over Material You's dynamic colors to strictly adhere to the laboratory requirements.
+### Reactive Behavior
+- **Typing:** As you type in the text field, the greeting updates instantly via recomposition.
+- **Counter:** The `+`, `–`, and `Reset` buttons correctly update the `count` state.
+- **Rotation:** The `name` field survives screen rotation thanks to `rememberSaveable`, while the `count` (using standard `remember`) resets to 0 as intended for this demonstration.
+
+> [!TIP]
+> To verify rotation survival, run the app on an emulator and use `Ctrl+F11` to rotate. You'll see that your name stays in the text field!
