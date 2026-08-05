@@ -1,0 +1,7 @@
+- [x] Create `SariSariStoreApp.kt` with the full POS UI layout.
+    - [x] Implement `StoreHeader`.
+    - [x] Implement `NavigationTabs`.
+    - [x] Implement `ProductCategories` grid.
+    - [x] Implement `ProductList` / `ProductItem`.
+- [x] Update `MainActivity.kt` to launch `SariSariStoreApp`.
+- [x] Verify UI with Compose Previews.
